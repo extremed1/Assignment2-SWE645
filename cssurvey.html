@@ -1,0 +1,535 @@
+<!--
+Author: Danielle Moore
+Date: February 4, 2026
+Description/Purpose: This is the HTML file for the Computer Science Department Survey.
+-->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>CS Department Survey</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="Styles/cssurveystyle.css" />
+    <link rel="icon" href="Images/gmu_edu-icon.svg" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/cssurvey.js" defer></script>
+  </head>
+  <body>
+    <!-----------Header-------------->
+    <header class="border border-5 border-success py-3 mb-4">
+      <div class="container-xxl">
+        <div class="row align-items-center justify-content-center text-center">
+          <!---Logo-->
+          <div class="col-auto">
+            <img
+              class="img-fluid"
+              src="Images/George Mason University 2C H.png"
+              alt="George Mason University Logo"
+              style="max-height: 70px"
+            />
+          </div>
+
+          <!--Title-->
+          <div class="col-auto">
+            <h1 class="h2 fw-semibold m-0">Department of Computer Science</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!---------End of Header---------->
+
+    <!---------Survey Section----------->
+    <section class="py-4" id="survey">
+      <div class="container-xxl survey-container">
+        <!--Survey Heading and Description-->
+        <div class="survey-heading-container">
+          <h2 class="survey-heading">
+            CS Department Campus Visit Questionnaire
+          </h2>
+        </div>
+        <p class="survey-description">
+          <br />
+
+          Please take a moment to fill out our survey to give us feedback on
+          your experience on the campus tour.
+          <br />
+
+          <span class="required-note">
+            <span class="required-asterisk">*</span> indicates a required field.
+          </span>
+        </p>
+
+        <!--Survey Form-->
+        <form class="row g-3" id="surveyForm" action="post" autocomplete="on">
+          <div class="col-12">
+            <div class="card rounded-4 shadow card-section-heading">
+              <div class="card-body text-center">
+                <h2 class="card-title fw-bold">Contact Information</h2>
+              </div>
+            </div>
+          </div>
+
+          <!--First Name-->
+          <div class="col-md-3">
+            <label for="inputFirstName" class="form-label required-field"
+              >First Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputFirstName"
+              placeholder="Jane"
+            />
+          </div>
+          <!--Last Name-->
+          <div class="col-md-3">
+            <label for="inputLastName" class="form-label required-field"
+              >Last Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputLastName"
+              placeholder="Doe"
+            />
+          </div>
+          <!--Email-->
+          <div class="col-md-3">
+            <label for="inputEmail" class="form-label required-field"
+              >Email</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="inputEmail"
+              placeholder="jane.doe@example.com"
+              required
+            />
+          </div>
+          <!--Phone Number-->
+          <div class="col-md-3">
+            <label for="inputPhoneNumber" class="form-label"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              class="form-control"
+              id="inputPhoneNumber"
+              placeholder="7035559999"
+            />
+          </div>
+          <!--Address-->
+          <div class="col-md-8">
+            <label for="inputStreet" class="form-label required-field"
+              >Address (Street)</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputStreet"
+              placeholder="1234 Main St"
+            />
+          </div>
+
+          <!--City-->
+          <div class="col-md-4">
+            <label class="form-label required-field">City</label>
+            <div id="displayCity" class="form-control bg-light">
+              (Auto-filled from zipcode)
+            </div>
+          </div>
+
+          <!--State-->
+          <div class="col-md-3">
+            <label class="form-label required-field">State</label>
+            <div id="displayState" class="form-control bg-light">
+              (Auto-filled from zipcode)
+            </div>
+          </div>
+
+          <!--Zipcode-->
+          <div class="col-md-3">
+            <label for="inputZip" class="form-label required-field"
+              >Zipcode</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputZip"
+              placeholder="Enter Zipcode"
+              onblur="lookupZipcode()"
+            />
+            <div id="zipError" class="text-danger"></div>
+          </div>
+          <!--Today's Date-->
+          <div class="col-md-3">
+            <label for="inputTodayDate" class="form-label">Today's Date</label>
+            <input type="date" class="form-control" id="inputTodayDate" />
+          </div>
+
+          <!--Survey Section Header-->
+          <div class="col-12">
+            <div class="card rounded-4 shadow card-section-heading">
+              <div class="card-body text-center">
+                <h2 class="card-title fw-bold">Survey Questions</h2>
+              </div>
+            </div>
+          </div>
+
+          <!--Survey Question 1-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              Were you satisfied with your campus visit?
+            </p>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="satisfaction"
+                id="satisfactionYes"
+              />
+              <label class="form-check-label" for="satisfactionYes">
+                Yes
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="satisfaction"
+                id="satisfactionNo"
+              />
+              <label class="form-check-label" for="satisfactionNo"> No </label>
+            </div>
+          </div>
+
+          <!--Survey Question 2-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              What did you like like the most about campus?
+            </p>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="students"
+                name="interest"
+                id="checkStudents"
+              />
+              <label class="form-check-label" for="checkStudents">
+                Students
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="location"
+                name="interest"
+                id="checkLocation"
+              />
+              <label class="form-check-label" for="checkLocation">
+                Location
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="campus"
+                name="interest"
+                id="checkCampus"
+              />
+              <label class="form-check-label" for="checkCampus"> Campus </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="atmosphere"
+                name="interest"
+                id="checkAtmosphere"
+              />
+              <label class="form-check-label" for="checkAtmosphere">
+                Atmosphere
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="dormRooms"
+                name="interest"
+                id="checkDormRooms"
+              />
+              <label class="form-check-label" for="checkDormRooms">
+                Dorm Rooms
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="sports"
+                name="interest"
+                id="checkSports"
+              />
+              <label class="form-check-label" for="checkSports"> Sports </label>
+            </div>
+          </div>
+          <!--Survey Question 3-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              How did you become interested in the university?
+            </p>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="interestSource"
+                id="familyFriendsInterest"
+              />
+              <label class="form-check-label" for="familyFriendsInterest">
+                Family/Friends
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="interestSource"
+                id="tvInterest"
+              />
+              <label class="form-check-label" for="tvInterest">
+                Television
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="interestSource"
+                id="socialMediaInterest"
+              />
+              <label class="form-check-label" for="socialMediaInterest">
+                Social Media
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="interestSource"
+                id="otherInterest"
+              />
+              <label class="form-check-label" for="otherInterest">
+                Other
+              </label>
+            </div>
+          </div>
+          <!--Survey Question 4-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              Was your campus visit informative?
+            </p>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="informative"
+                id="informativeYes"
+              />
+              <label class="form-check-label" for="informativeYes"> Yes </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="informative"
+                id="informativeNo"
+              />
+              <label class="form-check-label" for="informativeNo"> No </label>
+            </div>
+          </div>
+          <!--Survey Question 5-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              How was your campus tour experience?
+            </p>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="tourExperience"
+                id="tourExperienceExcellent"
+              />
+              <label class="form-check-label" for="tourExperienceExcellent">
+                Excellent
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="tourExperience"
+                id="tourExperienceGood"
+              />
+              <label class="form-check-label" for="tourExperienceGood">
+                Good
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="tourExperience"
+                id="tourExperienceOK"
+              />
+              <label class="form-check-label" for="tourExperienceOK">
+                OK
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="tourExperience"
+                id="tourExperiencePoor"
+              />
+              <label class="form-check-label" for="tourExperiencePoor">
+                Poor
+              </label>
+            </div>
+          </div>
+          <!--Survey Question 6-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              Did your campus visit increase your interest in George Mason
+              University?
+            </p>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="interestIncrease"
+                id="interestIncreaseYes"
+              />
+              <label class="form-check-label" for="interestIncreaseYes">
+                Yes
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="interestIncrease"
+                id="interestIncreaseNo"
+              />
+              <label class="form-check-label" for="interestIncreaseNo">
+                No
+              </label>
+            </div>
+          </div>
+          <!--Survey Question 7-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              How likely are you to recommend this school to other prospective
+              students?
+            </p>
+            <div class="form-floating">
+              <select id="inputrecommendationLikelihood" class="form-select">
+                <option disabled selected>Please select an option...</option>
+                <option value="veryLikely">Very Likely</option>
+                <option value="likely">Likely</option>
+                <option value="unlikely">Unlikely</option>
+              </select>
+              <label for="inputrecommendationLikelihood"
+                >Recommendation Likelihood</label
+              >
+            </div>
+          </div>
+
+          <!--Survey Question 8-->
+          <div class="survey-question-item">
+            <p class="survey-question-text">
+              Do you have any additional comments or feedback about your campus
+              visit? If you have no additional comments, please enter "N/A".
+            </p>
+            <div class="form-floating">
+              <textarea
+                class="form-control"
+                placeholder="Enter your additional comments here..."
+                id="floatingTextarea2"
+                style="height: 100px"
+              ></textarea>
+            </div>
+          </div>
+          <!--Survey Question 9-->
+          <div class="survey-question-item">
+            <p class="survey-question-text required-field">
+              Raffle: Enter for a chance to win free movie tickets! Please enter
+              10 comma separated numbers ranging from 1-100 in the field below.
+            </p>
+
+            <div class="row g-3">
+              <!-- Raffle Field -->
+              <div class="col-md-3 col-sm-6">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputData"
+                    placeholder="10,20,30,..."
+                    onblur="calculateAverageAndMax()"
+                  />
+                  <label for="inputData"
+                    >e.g. 5, 10, 55, 67, 78, 34, 12, 45, 22, 11</label
+                  >
+                </div>
+              </div>
+          </div>
+          <div class="col-4 mt-3">
+            <button
+              class="btn btn-outline-success fw-bold fs-5"
+              type="submit"
+              id="submit-button"
+            >
+              Submit
+            </button>
+            <button
+              class="btn btn-outline-danger fw-bold fs-5"
+              id="reset-button"
+              type="button"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+        <!--End of Survey Form-->
+      </div>
+    </section>
+    <!--End of Survey Section-->
+
+    <!--Footer-->
+    <footer class="footer">
+      <p class="footer__text">
+        &copy; Danielle Moore 2026 | Computer Science Department Survey
+        (Homework) | Logo provided by George Mason University | Questions
+        inspired by Delgado Community College Campus Visit Questionnaire
+      </p>
+    </footer>
+  </body>
+</html>
