@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hw2-cluster-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: apps.deployment-default-hw2-cluster-deployment
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: apps.deployment-default-hw2-cluster-deployment
+    spec:
+      containers:
+        - name: container-0
+          image: xtremed1/my-survey:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
