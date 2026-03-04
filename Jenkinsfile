@@ -34,7 +34,7 @@ pipeline{
       steps{
         script{
           // Log in to Docker Hub using credentials stored in Jenkins
-          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
             // Push the built image to Docker Hub
             dockerImage.push()
           }
