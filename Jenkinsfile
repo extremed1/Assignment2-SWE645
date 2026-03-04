@@ -36,7 +36,7 @@ pipeline{
           // Log in to Docker Hub using credentials stored in Jenkins
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
             // Push the built image to Docker Hub
-            dockerImage.push()
+            dockerImage.push("${IMAGE_TAG}")
           }
         }
       }
