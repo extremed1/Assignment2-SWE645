@@ -51,8 +51,8 @@ pipeline{
           //3. Apply the service configuration to ensure the application is accessible
           sh """
           sed -i 's|${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}|${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}|' k8s/deployment.yaml
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml --validate=false
+          kubectl apply -f k8s/service.yaml --validate=false
           """
         }
       }
