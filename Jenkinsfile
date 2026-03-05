@@ -57,6 +57,12 @@ pipeline{
           # Update the deployment resource called 'hw2-cluster-deployment' and set the container 'container-0' to use the new image from Docker Hub
           kubectl set image deployment/hw2-cluster-deployment container-0=${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}
 
+          # Force pods to restart so they pull the new image
+          kubectl rollout restart deployment hw2-cluster-deployment
+
+          # Wait until all pods are ready
+          kubectl rollout status deployment hw2-cluster-deployment
+
           # Apply service config
           kubectl apply -f k8s/service.yaml
           """
