@@ -44,19 +44,23 @@ pipeline{
 
     stage('Update Kubernetes Cluster with New Image'){
       steps{
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) { //Using Jenkins credentials to securely access the kubeconfig file for Kubernetes cluster authentication
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]){
         script{
           //Shell block to:
           //1. Set the new image for the Kubernetes deployment (replacing placeholder image name in deployment.yaml with the new image name)
           //2. Apply the updated deployment configuration to the Kubernetes cluster using kubectl
           //3. Apply the service configuration to ensure the application is accessible
           sh """
+          # Use the secret kubeconfig file
           export KUBECONFIG=$KUBECONFIG_FILE
 
-          sed -i 's|${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}|${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}|' k8s/deployment.yaml
-          kubectl apply -f k8s/deployment.yaml
+          # Update the deployment resource called 'hw2-cluster-deployment' and set the container 'container-0' to use the new image from Docker Hub
+          kubectl set image deployment/hw2-cluster-deployment container-0=${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}
+
+          # Apply service config
           kubectl apply -f k8s/service.yaml
           """
+        }
         }
       }
     }
