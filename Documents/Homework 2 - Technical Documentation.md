@@ -25,23 +25,16 @@ The system comprises of the following components:
 ### **1. Setup GitHub Repository**
 
 - First, create a Github account on https://www.github.com. Once you are logged into your account, click on the green **"New"** button next to **"Top Repositories"** to create a new repository.
-  <img src="Images/GitHubNewRepoScreenShot.png" 
-       alt="Screenshot of Create New Repo Button in Github" 
-       width="600" height="200" style="display:block; margin:auto;">
-  - Provide a name for the repository (you can leave the rest at default configuration) and click the green **"Create repository"** button. The name of my repository is **Assignment2-SWE645**.
+
+![Screenshot of Create New Repo Button in Github](Images/GitHubNewRepoScreenShot.png){ width=50% }
+
+- Provide a name for the repository (you can leave the rest at default configuration) and click the green **"Create repository"** button. The name of my repository is **Assignment2-SWE645**.
 
 - Install **git** on your local machine. Use the documentation from https://git.scm.com/install/ to install git based on your operating system. I have git for macOS installed.
 - Open VSCode on your local machine and open the folder containing your application files.
 
-<div style="display: flex; justify-content: center; gap: 20px;">
-  <img src="Images/VSCodeOpenFolderScreenShot.png" 
-       alt="Screenshot of how to open folder in VSCode" 
-       width="500" height="500">
-       
-  <img src="Images/VSCodeDirectoryWithFiles.png" 
-       alt="Screenshot of directory in VSCode" 
-       width="500" height="500">
-</div>
+![Screenshot of how to open folder in VSCode](Images/VSCodeOpenFolderScreenShot.png){ width=50% }
+![Screenshot of directory in VSCode](Images/VSCodeDirectoryWithFiles.png){ width=50% }
 
 - Open your terminal and enter the following commands to initialize your local git repository:
   ```
@@ -55,18 +48,18 @@ The system comprises of the following components:
   git push origin master
   ```
 - Now all files on in your remote repo should be in your repository
-  <img src="Images/GitHubRepoScreenshot.png" alt="Screenshot of github repo" width="500" height="300" style="display:block; margin:auto;">
+  ![Screenshot of github repo](Images/GitHubRepoScreenshot.png){ width=65% }
 
 ### **2. Launch EC2 Instance on AWS**
 
 - In the search bar, type **EC2** and click on the 1st service listed
-  <img src="Images/AWSEC2SearchScreenshot.png" alt="Screenshot of EC2 Service from search bar" width="1200" height="300" style="display:block; margin:auto;">
+  ![Screenshot of EC2 Service from search bar](Images/AWSEC2SearchScreenshot.png){ width=50% }
 
 - On the left pane, scroll down to **Network & Security** and click on **Security Groups**. Then click the orange **Create security group** button.
-  <img src="Images/SecurotyGroupLeftPane.png" alt="Screenshot of Left Pane for Security Group" width="400" height="1000" style="display:block; margin:auto;">
 
 - Give the security group a name, and then fill out the inbound rules according to the screenshot below. The outbound rules should remain at the default configuration:
-  <img src="Images/SecurityGroup.png" alt="screenshot of security group configuration" width="550" height="300" style="display:block; margin:auto;">
+
+  ![screenshot of security group configuration](Images/SecurityGroup.png){ width=50% }
 
 - After creating the security group, scroll to **Instances** in the pane, and click the orange **Launch instances** button.
 - Provide a name for the instance, select the Ubuntu AMI (**Ubuntu Server 24.04 LTS (HVM), SSD Volume Type**), select the **t3.large** instance type, select the **Proceed without a key pair** option under Key pair (login) section, select the **Select existing security group** option under Network Settings and then select the security group you created (**HW2SecurityGroup**), then increase the storage to **30 GiB** under the **Configure storage** section. Then, click the orange **Luanch instance** button.
@@ -154,7 +147,7 @@ $ sudo su -
 
 - In the dockerfile, use the **FROM** command to get the base image for the build. I used nginx:alpine. I needed to remove the default html content in Nginx, so I used **RUN rm -rf /usr/share/nginx/html/\*** to do so. I copied all of my necessary folders. Then, I used a custom Nginx configuration to set cssurvey.html as default page. I exposed port 80 for the HTTP server using **EXPOSE 80**. Then, I used **CMD ["nginx", "-g", "daemon off;"]** to start Nginx when the container runs.
 
-  <img src="Images/dockerfilescreenshot.png" alt="screenshot of my dockerfile" width="750" height="500" style="display:block; margin:auto;">
+  ![screenshot of my dockerfile](Images/dockerfilescreenshot.png){ width=50% }
 
 - Because I am building docker images on a Apple Silicon Mac (arm64), I will need to build a multi-architecture image so that it works on my Kubernetes nodes. I used the following commands to build the multi-architecture image:
   ```
@@ -187,28 +180,11 @@ $ sudo su -
 
 - Open your rancher UI again using your public IPv4 address (mine is at at http://3.90.194.124). You should still be logged in. In the left menu pane, click on **Cluster Management**. Then, click on the **Create** button and select **Custom** under **Use existing nodes and create a cluster using RKE2/K3s** section.
 
-<div style="display: flex; justify-content: center; gap: 20px;">
-  <img src="Images/ClusterManagementScreenShot.png" 
-       alt="Cluster Management Navigation" 
-       width="200" height="500">
-       
-  <img src="Images/CreateClusterScreenShot.png" 
-       alt="Create a cluster button" 
-       width="600" height="200">
-
-<img src="Images/CustomClusterScreenShot.png" 
-  alt="Create a custom cluster" 
-  width="800" height="300">
-
-</div>
-
 - On the next page, give the cluster a name (mine is hw2-cluster) and click **Create**. On the next page, select the 3 boxes under **Step 1**. Under **Step 2**, select the box for **insecure** and copy the given command in your ec2 instance terminal. Once the cluster is done, it will show **ACTIVE** and it is ready to deploy.
 
 - Click on the cluster and copy the KubeConfig file to your clipboard.
 
-<img src="Images/KubeConfigFile.png" 
-  alt="Copy KubeConfig file to clipboard" 
-  width="900" height="300" style="display:block; margin:auto;">
+![Copy KubeConfig file to clipboard](Images/KubeConfigFile.png){ width=50% }
 
 - In the terminal for the EC2 instance, run the following commands:
 
@@ -225,15 +201,11 @@ $ sudo su -
 
 - To create your deployment and service yaml's, I used the Rancher UI. Click on the **Explore** button in the cluster (hw2-cluster), click **workloads**, then **deployments**. Click create and then provide a cluster name, add your docker image name, increase the number of replicas to **3**, select **Node Port** under the network settings, name the network **nodeport** and then enter **8080** for the private container port. Leave the listening port empty. Press create.
 
-<img src="Images/CreateDeploymentScreenShot.png" 
-  alt="Creating deployment screenshot" 
-  width="700" height="300" style="display:block; margin:auto;">
+![Creating deployment screenshot](Images/CreateDeploymentScreenShot.png){ width=50% }
 
 - Since my docker container is exposed on port **80**, I changed the target port to **80** instead of 8080. Once it was active, I selected the deployment (mine is hw2-cluster-deployment), then I selected **Services** . I clicked on **Edit YAML** on the **Node Port** service and changed the target port.
 
-<img src="Images/ChangingTargetPortServiceYaml.png" 
-  alt="Changing target port in node port service yaml" 
-  width="500" height="200" style="display:block; margin:auto;">
+![Changing target port in node port service yaml](Images/ChangingTargetPortServiceYaml.png){ width=50% }
 
 - You should be able to view your survey form on http://your_public_ip_or_public_dns:highportnumber/index.html (mine is http://3.90.194.124:32354/cssurvey.html )
 
@@ -264,27 +236,13 @@ $ sudo su -
 
 - You'll need to put a deployment.yaml, service.yaml, and a Jenkinsfile in your github repository. For the deployment yaml, go to the rancher UI, click on your cluster, go to **Deployments**, click on the 3 dots next to **Show Configuration** and select **Download YAML**. For the services yaml, go to **Services** in the cluster, click on the 3 dots for the **Node Port** service and click **Download YAML**.
 
-<div style="display: flex; justify-content: center; gap: 20px;">
-  <img src="Images/DeploymentDownloadYAML.png" 
-       alt="Download Deployment YAML" 
-       width="700" height="500">
-       
-  <img src="Images/ServiceDownloadYaml.png" 
-       alt="Download Service YAML" 
-       width="600" height="200">
-</div>
+![Download Deployment YAML](Images/DeploymentDownloadYAML.png){ width=50% }
+![Download Service YAML](Images/ServiceDownloadYaml.png){ width=50% }
 
 - In your project folder in VSCode, create a new folder named **k8s** and place your downloaded deployment and service yaml's in the folder. These files contain configurations that are from Rancher and not needed for jenkins, so I removed all unnecessary information.
 
-<div style="display: flex; justify-content: center; gap: 20px;">
-  <img src="Images/DeploymentYAML.png" 
-       alt="Deployment YAML" 
-       width="500" height="200">
-       
-  <img src="Images/ServiceYAML.png" 
-       alt="Service YAML" 
-       width="500" height="200">
-</div>
+![Deployment YAML](Images/DeploymentYAML.png){ width=50% }
+![Service YAML](Images/ServiceYAML.png){ width=50% }
 
 - In the same root as your html, create a file named **Jenkinsfile**. This is where you will create your **pipeline** with your **environment variables**, **stages** and **post** actions.
 
