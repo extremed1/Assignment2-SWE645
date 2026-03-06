@@ -1,3 +1,9 @@
+#Author: Danielle Moore
+#Date: 3/3/2026
+#Spring 2026 - SWE 645 - Assignment 2
+#Description: This Dockerfile sets up a simple Nginx web server to serve my cssurvey.html 
+#page along with its associated resources (CSS, JS, images). 
+
 #Using the official Nginx image as the base image
 FROM nginx:alpine
 

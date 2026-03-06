@@ -1,3 +1,9 @@
+// Author: Danielle Moore
+// Date: 3/3/2026
+// Spring 2026 - SWE 645 - Assignment 2
+// Description: This Jenkins pipeline automates the process of building a Docker image from a GitHub repository, 
+//              pushing it to Docker Hub, and updating a Kubernetes cluster with the new image. 
+
 pipeline{
   agent any //Run this pipeline on any available Jenkins agent/node
 
