@@ -52,7 +52,7 @@ textarea {
 
 .required-field::after {
   content: " *";
-  color: purple;
+  color: green;
   font-weight: bold;
   margin-left: 4px;
 }
@@ -65,7 +65,7 @@ textarea {
 }
 
 .required-asterisk {
-  color: purple;
+  color: green;
   font-weight: bold;
 }
 

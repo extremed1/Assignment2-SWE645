@@ -20,7 +20,7 @@ The system comprises of the following components:
 - Kubernetes cluster managed by Rancher
 - Jenkins CI/CD Pipeline to automate docker builds and deployment of kubernetes cluster
 
-## Installation & Setup Instructions with CI/CD Pipeline Details & Kubernetes Deployment Details
+## Installation & Setup Instructions With Kubernetes Deployment Details
 
 ### **1. Setup GitHub Repository**
 
@@ -92,7 +92,8 @@ $ sudo su -
 - Run the following command to install rancher
 
   ```
-  $ docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:stable
+  $ docker run --privileged -d --restart=unless-stopped -p 80:80 -p
+  443:443 rancher/rancher:stable
   ```
 
 - Once the installation is completed, go back to the details page of your EC2 instance, click **open address** on the public IPv4 DNS address. This will take you to the rancher UI.
@@ -264,3 +265,34 @@ $ sudo su -
   7. Click **Apply** and **Save**
 
 - Your CI/CD should successfully build.
+
+## CI/CD Pipeline Details
+
+My Jenkins file contains all of the pipeline stages and environment variables needed to execute the CI/CD pipeline in Jenkins. I use **agent any** to run the pipeline on any available Jenkins node. I define my environment variables in the **environment** block. I use environment variables for my DockerHub user name (**DOCKERHUB_USERNAME**), image name (**IMAGE_NAME**), image tag (**IMAGE_TAG**), github user name (**GITHUB_USERNAME**), and my github repository (**GITHUB_REPO**). My **stage** block contains 4 stages:
+
+1. checkout code from GitHub,
+2. build docker image,
+3. push docker image to docker hub, and
+4. update kubernetes cluster with new image.
+
+### Checkout code from GitHub
+
+Here, the git command is used to pull the source code from my repository.
+
+### Build Docker Image
+
+The docker image is built using the dockerfile in the repository and the resulting image object is stored in the 'dockerImage' variable.
+
+### Push Docker Image to Docker Hub
+
+The pipeline logs into my docker hub account using the credentials I stored in Jenkins and pushes the built image to docker hub with the given image tag stored in my environment block.
+
+### Update Kubernetes Cluster with New Image
+
+In this stage, I first set the KUBECONFIG variable to point to the secret kubeconfig file that I uploaded to Jenkins. I then
+use `kubectel` to set the image inside the container to use the new image from docker hub. This is to avoid making changes directly to deployment.yaml. I use `kubectl` to restart the pods to ensure the pods pull the new image. Since I'm using the same image tag (**latest**), the pods will not recognize that a new image has been built. Thus, I needed to restart all pods to ensure the latest image is pulled. Next, I use `kubectl` to force the pods to wait until all pods are ready, then I apply the service configuration using `kubectl apply -f k8s/service.yaml`.
+
+The last step in my pipeline is the **post** block. After the execution of the pipeline, a success or failure of the pipeline will determine which message gets displayed.
+
+![Jenkinsfile Screenshot 1](Images/JenkinsfileScreenShot1.png){width=70%}
+![Jenkinsfile Screenshot 1](Images/JenkinsfileScreenshot2.png){width=70%}

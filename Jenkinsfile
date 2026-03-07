@@ -53,9 +53,11 @@ pipeline{
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]){
         script{
           //Shell block to:
-          //1. Set the new image for the Kubernetes deployment (replacing placeholder image name in deployment.yaml with the new image name)
-          //2. Apply the updated deployment configuration to the Kubernetes cluster using kubectl
-          //3. Apply the service configuration to ensure the application is accessible
+          //1. Set KUBECONFIG environment variable to point to the secret kubeconfig file
+          //2. Use kubectl to set the image inside the container to use the new image from Docker Hub
+          //3. Restart the deployment to ensure pods pull the new image
+          //4. Wait for the rollout to complete and all pods to be ready
+          //5. Apply the Kubernetes service configuration from the repo
           sh """
           # Use the secret kubeconfig file
           export KUBECONFIG=$KUBECONFIG_FILE
